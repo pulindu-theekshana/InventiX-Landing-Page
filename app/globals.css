@@ -1,0 +1,162 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   InventiX design tokens — derived from the brand guideline + logo
+   ------------------------------------------------------------------ */
+@theme {
+  /* Surfaces */
+  --color-ink: #1a0704; /* deepest maroon-black, hero + footer */
+  --color-ink-800: #240b06;
+  --color-ink-700: #33130a;
+
+  /* Primary */
+  --color-maroon: #501602;
+  --color-maroon-400: #7c3418;
+  --color-gold: #ffc800;
+  --color-gold-300: #ffdc61;
+
+  /* Secondary */
+  --color-amber: #c4910c;
+  --color-leaf: #086c1a;
+  --color-leaf-100: #e3f2e5;
+
+  /* Paper */
+  --color-paper: #fffcf4;
+  --color-paper-200: #f2e7d5;
+  --color-paper-300: #e2d2b8;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, SFMono-Regular, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-maroon);
+}
+
+/* Keyboard focus — visible everywhere, on both surfaces */
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------------
+   Signature motif: the shelf rail.
+   A shop's shelf edge — a strip with price-label ticks. Used as the
+   section divider throughout the site.
+   ------------------------------------------------------------------ */
+.shelf-rail {
+  height: 1px;
+  background: currentColor;
+  opacity: 0.16;
+  position: relative;
+}
+.shelf-rail::before {
+  content: "";
+  position: absolute;
+  inset: -4px 0 auto 0;
+  height: 9px;
+  background-image: repeating-linear-gradient(
+    to right,
+    currentColor 0 1px,
+    transparent 1px 48px
+  );
+  opacity: 0.5;
+}
+
+/* Perforated label edge used on the stock-board panels */
+.label-notch {
+  background-image: radial-gradient(
+    circle at 3px 50%,
+    transparent 0 3px,
+    currentColor 3px
+  );
+}
+
+/* ------------------------------------------------------------------
+   Motion
+   ------------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes ix-drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-drop-in {
+  animation: ix-drop-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ix-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgb(255 200 0 / 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgb(255 200 0 / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(255 200 0 / 0);
+  }
+}
+.animate-pulse-ring {
+  animation: ix-pulse-ring 2.4s ease-out infinite;
+}
+
+/* Stock meter fill — width is driven inline, this only eases it */
+.meter-fill {
+  transition: width 1.1s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .meter-fill {
+    transition: none;
+  }
+  .animate-drop-in,
+  .animate-pulse-ring {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
