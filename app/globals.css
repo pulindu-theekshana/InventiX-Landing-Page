@@ -131,6 +131,37 @@ body {
   animation: ix-pulse-ring 2.4s ease-out infinite;
 }
 
+@keyframes ix-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+/* Paused until the pointer arrives — see PhoneMockup.tsx */
+.float-on-hover {
+  animation: ix-float 5.5s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.group:hover .float-on-hover {
+  animation-play-state: running;
+}
+
+@keyframes ix-glow {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+.animate-glow {
+  animation: ix-glow 8s ease-in-out infinite;
+}
+
 /* Stock meter fill — width is driven inline, this only eases it */
 .meter-fill {
   transition: width 1.1s cubic-bezier(0.65, 0, 0.35, 1);
@@ -149,6 +180,8 @@ body {
     transition: none;
   }
   .animate-drop-in,
+  .float-on-hover,
+  .animate-glow,
   .animate-pulse-ring {
     animation: none !important;
   }

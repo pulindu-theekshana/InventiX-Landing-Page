@@ -1,5 +1,6 @@
 import Link from "next/link";
 import StockBoard from "@/components/StockBoard";
+import PhoneMockup from "@/components/PhoneMockup";
 import SeasonTimeline from "@/components/SeasonTimeline";
 import CtaBand from "@/components/CtaBand";
 import { Reveal } from "@/components/Reveal";
@@ -119,6 +120,48 @@ export default function Home() {
           <div className="lg:pl-6">
             <StockBoard />
           </div>
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------- */}
+      {/* The app itself                                              */}
+      {/* ---------------------------------------------------------- */}
+      <section className="overflow-hidden bg-gradient-to-b from-ink to-maroon">
+        <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 py-24 lg:grid-cols-2 lg:gap-8 lg:px-8 lg:py-28">
+          <Reveal>
+            <div>
+              <SectionHeading
+                tone="light"
+                eyebrow="Inside the app"
+                title="Your whole shop, on the counter phone"
+                intro="Every item, its price, and how many are left — with the ones about to run out already pulled to the top."
+              />
+              <ul className="mt-9 space-y-4">
+                {[
+                  "One glance tells you how the 550 items on your shelves are split",
+                  "Filter to low stock and the reorder list writes itself",
+                  "Tap an item to see its supplier, last price and delivery history",
+                ].map((line) => (
+                  <li
+                    key={line}
+                    className="flex items-start gap-3 text-base/7 text-paper/70"
+                  >
+                    <span className="mt-2.5 size-1.5 shrink-0 rounded-full bg-gold" />
+                    {line}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-10">
+                <ButtonLink href="/features" variant="quiet">
+                  Every feature in detail
+                </ButtonLink>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <PhoneMockup />
+          </Reveal>
         </div>
       </section>
 
