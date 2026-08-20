@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 /* NOTE: these figures are placeholders — swap in your real numbers. */
 const plans = [
   {
-    name: "Kade",
-    price: "Free",
+    name: "Starter",
+    price: "LKR 5,000",
     cadence: "for one shop",
     pitch: "Enough to stop running out of things.",
     features: [
@@ -23,12 +23,12 @@ const plans = [
       "Delivery stage tracking",
       "Weekly sales report",
     ],
-    cta: "Start free",
+    cta: "1 Month free trial",
     featured: false,
   },
   {
-    name: "Shop",
-    price: "LKR 2,900",
+    name: "Standard",
+    price: "LKR 12,000",
     cadence: "per month, per shop",
     pitch: "For a shop that wants to buy ahead instead of catching up.",
     features: [
@@ -43,9 +43,9 @@ const plans = [
     featured: true,
   },
   {
-    name: "Branches",
-    price: "Let's talk",
-    cadence: "from 3 locations",
+    name: "PRO",
+    price: "LKR 25,000",
+    cadence: "multi-branch",
     pitch: "One stock picture across every branch you run.",
     features: [
       "Everything in Shop",
@@ -55,7 +55,7 @@ const plans = [
       "Consolidated reporting",
       "Onboarding and data import help",
     ],
-    cta: "Talk to us",
+    cta: "Request early access",
     featured: false,
   },
 ];
@@ -169,7 +169,7 @@ export default function PricingPage() {
       <section className="bg-white">
         <div className="mx-auto max-w-3xl px-6 py-24 lg:px-8">
           <Reveal>
-            <Eyebrow>Questions</Eyebrow>
+            <Eyebrow>FAQ</Eyebrow>
             <h2 className="mt-3 text-3xl font-extrabold tracking-[-0.03em] text-maroon">
               Before you ask
             </h2>
