@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 /* -------------------------------------------------------------- */
-/* Eyebrow — the mono shelf-label voice used above every section    */
+/* Eyebrow — the mono shelf-label voice above every section         */
 /* -------------------------------------------------------------- */
 export function Eyebrow({
   children,
@@ -53,8 +53,8 @@ export function SectionHeading({
   align = "left",
 }: {
   eyebrow?: string;
-  title: string;
-  intro?: string;
+  title: ReactNode;
+  intro?: ReactNode;
   tone?: "dark" | "light";
   align?: "left" | "center";
 }) {
@@ -64,7 +64,7 @@ export function SectionHeading({
     >
       {eyebrow ? <Eyebrow tone={tone}>{eyebrow}</Eyebrow> : null}
       <h2
-        className={`mt-3 text-3xl font-extrabold tracking-[-0.03em] text-balance sm:text-4xl ${
+        className={`tracking-display mt-3 text-3xl font-bold text-balance sm:text-[2.6rem] sm:leading-[1.08] ${
           tone === "light" ? "text-paper" : "text-maroon"
         }`}
       >
@@ -72,7 +72,7 @@ export function SectionHeading({
       </h2>
       {intro ? (
         <p
-          className={`mt-4 text-lg/8 text-pretty ${
+          className={`mt-5 text-lg/8 text-pretty ${
             tone === "light" ? "text-paper/70" : "text-ink/70"
           }`}
         >
@@ -85,37 +85,108 @@ export function SectionHeading({
 
 /* -------------------------------------------------------------- */
 /* Buttons                                                          */
+/*                                                                  */
+/* One accent colour, and it only ever means "this is the action".  */
+/* Everything else is a border or nothing at all.                   */
 /* -------------------------------------------------------------- */
 export function ButtonLink({
   href,
   children,
   variant = "solid",
   className = "",
+  arrow = false,
 }: {
   href: string;
   children: ReactNode;
   variant?: "solid" | "outline" | "quiet";
   className?: string;
+  arrow?: boolean;
 }) {
   const base =
-    "inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition duration-200";
+    "group/btn inline-flex items-center justify-center gap-2 rounded-sm px-5 py-2.5 text-sm font-semibold transition-all duration-300";
   const styles = {
     solid:
-      "bg-gold text-maroon hover:bg-gold-300 hover:-translate-y-0.5 shadow-[0_6px_0_-2px_rgba(80,22,2,0.25)]",
+      "bg-gold text-maroon hover:bg-gold-300 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-8px_rgba(255,200,0,0.6)]",
     outline:
-      "border border-maroon/25 text-maroon hover:border-maroon/60 hover:bg-maroon/5",
+      "text-maroon hairline hover:bg-maroon/[0.04] hover:-translate-y-0.5",
     quiet:
-      "border border-paper/25 text-paper hover:border-gold hover:text-gold",
+      "hairline-light text-paper hover:text-gold hover:-translate-y-0.5",
   }[variant];
   return (
     <Link href={href} className={`${base} ${styles} ${className}`}>
       {children}
+      {arrow && (
+        <svg
+          viewBox="0 0 16 8"
+          aria-hidden="true"
+          className="size-3.5 transition-transform duration-300 group-hover/btn:translate-x-1"
+        >
+          <path
+            d="M1 4h13m0 0-3.5-3.5M14 4l-3.5 3.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )}
     </Link>
   );
 }
 
 /* -------------------------------------------------------------- */
+/* Badge — small mono label, used for status and counts             */
+/* -------------------------------------------------------------- */
+export function Badge({
+  children,
+  tone = "neutral",
+}: {
+  children: ReactNode;
+  tone?: "neutral" | "good" | "warn" | "bad" | "gold";
+}) {
+  const styles = {
+    neutral: "bg-maroon/6 text-ink/60",
+    good: "bg-leaf-100 text-leaf",
+    warn: "bg-gold-100 text-amber",
+    bad: "bg-clay/10 text-clay",
+    gold: "bg-gold/15 text-amber",
+  }[tone];
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-mono text-[0.62rem] tracking-[0.1em] uppercase ${styles}`}
+    >
+      {children}
+    </span>
+  );
+}
+
+/* -------------------------------------------------------------- */
+/* Card — the hairline-and-lift surface used across the site        */
+/* -------------------------------------------------------------- */
+export function Card({
+  children,
+  tone = "paper",
+  className = "",
+}: {
+  children: ReactNode;
+  tone?: "paper" | "dark";
+  className?: string;
+}) {
+  const styles =
+    tone === "dark"
+      ? "hairline-light bg-paper/[0.04] hover:bg-paper/[0.07]"
+      : "hairline bg-white hover:shadow-[0_18px_40px_-24px_rgba(80,22,2,0.35)]";
+  return (
+    <div className={`lift rounded-lg p-6 ${styles} ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------- */
 /* Stock meter — the visual unit of the whole product               */
+/* (kept for the pages that already use it)                         */
 /* -------------------------------------------------------------- */
 export function StockMeter({
   label,
@@ -131,7 +202,7 @@ export function StockMeter({
   const colour = {
     ok: "bg-leaf",
     watch: "bg-amber",
-    low: "bg-[#B02A0E]",
+    low: "bg-clay",
   }[status];
 
   return (
