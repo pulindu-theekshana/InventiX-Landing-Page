@@ -61,6 +61,10 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* clip, not hidden: `hidden` on body silently kills position: sticky,
+     which the navbar depends on. `clip` trims stray horizontal overflow
+     without that side effect. */
+  overflow-x: clip;
 }
 
 /* Display type sits tight. Non-negotiable — it is most of what makes
@@ -172,6 +176,16 @@ h3 {
 .reveal[data-visible="true"] {
   opacity: 1;
   transform: none;
+}
+/* On a phone the columns are stacked, so entering from the side says
+   nothing about where the content came from — and the offset pushes the
+   element past the left edge, which buys a horizontal scrollbar nobody
+   asked for. Below sm, everything simply rises. */
+@media (max-width: 639px) {
+  .reveal[data-from="left"],
+  .reveal[data-from="right"] {
+    transform: translateY(22px);
+  }
 }
 
 /* On a narrow screen the tab strip scrolls sideways rather than wrapping
