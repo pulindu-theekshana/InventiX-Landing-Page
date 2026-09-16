@@ -180,14 +180,16 @@ export default function SuppliersPage() {
 
           <div className="mt-14 grid items-center gap-12 lg:grid-cols-[1fr_1fr]">
             <Reveal from="left" delay={160}>
-              <Image
-                src="/img/delivery.svg"
-                alt="A delivery lorry on a marked route between the supplier and the shop, with the completed stages ticked off behind it."
-                width={560}
-                height={320}
-                unoptimized
-                className="w-full max-w-lg"
-              />
+              <div className="hairline-light overflow-hidden rounded-lg">
+                <Image
+                  src="/img/photo/delivery.jpg"
+                  alt="Two workers loading cartons into the back of a delivery lorry at a loading bay."
+                  width={1024}
+                  height={765}
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="h-full w-full object-cover"
+                />
+              </div>
             </Reveal>
 
             <Reveal from="right" delay={200}>

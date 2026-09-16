@@ -116,6 +116,16 @@ export default function FeaturesPage() {
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-ink">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+          <Image
+            src="/img/photo/shelves.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center opacity-[0.22]"
+          />
+          <div className="absolute inset-0 bg-ink/70" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/60 to-ink/30" />
           <div className="absolute -top-40 -right-40 size-[34rem] rounded-full bg-maroon-400/25 blur-3xl" />
         </div>
         <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 pt-16 pb-24 lg:grid-cols-[1.05fr_1fr] lg:px-8 lg:pt-20">

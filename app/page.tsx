@@ -98,7 +98,20 @@ export default function Home() {
       {/* underneath, not a competing object beside it.                 */}
       {/* ============================================================ */}
       <section className="relative isolate overflow-hidden bg-ink">
+        {/* The photograph sits well back — a third of full strength under two
+            dark washes. At 1024px wide it would look soft if it were the
+            subject; as atmosphere behind the type, soft is exactly right. */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+          <Image
+            src="/img/photo/hero.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center opacity-[0.32]"
+          />
+          <div className="absolute inset-0 bg-ink/65" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/30 to-ink" />
           <div className="absolute -top-48 left-1/2 size-[46rem] -translate-x-1/2 rounded-full bg-maroon-400/20 blur-[130px]" />
         </div>
 
