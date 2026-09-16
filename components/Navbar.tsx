@@ -7,7 +7,13 @@ import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Logo } from "./Logo";
 
+/**
+ * Order matters here: this is the same sequence ScrollAdvance walks when
+ * you scroll off the bottom of a page, so the nav reads as the path
+ * through the site rather than an unordered list of links.
+ */
 const navigation = [
+  { name: "Home", href: "/" },
   { name: "Features", href: "/features" },
   { name: "How it works", href: "/how-it-works" },
   { name: "Suppliers", href: "/suppliers" },
@@ -57,7 +63,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        <div className="hidden lg:flex lg:gap-x-9">
+        <div className="hidden lg:flex lg:gap-x-7">
           {navigation.map((item) => {
             const active = pathname === item.href;
             return (

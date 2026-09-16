@@ -1,251 +1,23 @@
-// import type { Metadata } from "next";
-// import CtaBand from "@/components/CtaBand";
-// import SeasonTimeline from "@/components/SeasonTimeline";
-// import { Reveal } from "@/components/Reveal";
-// import { Eyebrow, SectionHeading, ShelfRail } from "@/components/ui";
-
-// export const metadata: Metadata = {
-//   title: "How it works",
-//   description:
-//     "From loading your stock list to a delivered carton: setup, low-stock alerts, supplier messaging, delivery stages and the forecasting model behind InventiX.",
-// };
-
-// /* These are a genuine sequence, so they're numbered. */
-// const setup = [
-//   {
-//     step: "01",
-//     title: "Load what you already have",
-//     body: "Import a spreadsheet, or add items as you count the shelves. Most shops get their first hundred items in during one afternoon.",
-//   },
-//   {
-//     step: "02",
-//     title: "Set a reorder point per item",
-//     body: "The level at which you'd normally start worrying. InventiX suggests one once it has a few weeks of sales, and you can change it any time.",
-//   },
-//   {
-//     step: "03",
-//     title: "Add your suppliers",
-//     body: "Name, WhatsApp number or email, and what they supply. Scores start building from the first delivery.",
-//   },
-//   {
-//     step: "04",
-//     title: "Sell as usual",
-//     body: "Record sales at the counter or import them at the end of the day. Everything after this happens on its own.",
-//   },
-// ];
-
-// const deliveryStages = [
-//   {
-//     name: "Processing",
-//     body: "The supplier has the order and is putting it together.",
-//   },
-//   {
-//     name: "Put to delivery",
-//     body: "Packed and handed to whoever is carrying it.",
-//   },
-//   {
-//     name: "On the way",
-//     body: "In transit to your shop, with the promised arrival date shown.",
-//   },
-//   {
-//     name: "Purchased",
-//     body: "Received, counted and added to stock. Any shortfall is recorded against the supplier.",
-//   },
-// ];
-
-// export default function HowItWorksPage() {
-//   return (
-//     <>
-//       <section className="bg-ink">
-//         <div className="mx-auto max-w-7xl px-6 pt-20 pb-24 lg:px-8">
-//           <Reveal>
-//             <SectionHeading
-//               tone="light"
-//               eyebrow="How it works"
-//               title="From an empty shelf to a delivered carton"
-//               intro="Four steps to set up, and then the loop runs by itself: watch, warn, order, track, learn."
-//             />
-//           </Reveal>
-//         </div>
-//       </section>
-
-//       {/* Setup */}
-//       <section className="bg-paper">
-//         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-//           <Reveal>
-//             <Eyebrow>Getting started</Eyebrow>
-//           </Reveal>
-//           <div className="mt-10 grid gap-px overflow-hidden rounded-2xl bg-maroon/10 md:grid-cols-2 lg:grid-cols-4">
-//             {setup.map((item, i) => (
-//               <Reveal key={item.step} delay={i * 80}>
-//                 <div className="h-full bg-white p-7">
-//                   <span className="font-mono text-3xl font-bold text-gold">
-//                     {item.step}
-//                   </span>
-//                   <h3 className="mt-4 text-lg font-bold text-maroon">
-//                     {item.title}
-//                   </h3>
-//                   <p className="mt-3 text-sm/6 text-ink/70">{item.body}</p>
-//                 </div>
-//               </Reveal>
-//             ))}
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Delivery stages */}
-//       <section className="bg-white">
-//         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-//           <ShelfRail className="mb-14" />
-//           <Reveal>
-//             <SectionHeading
-//               eyebrow="Delivery tracking"
-//               title="Four stages, and each one is a timestamp"
-//               intro="A delivery either moved or it didn't. Every stage change is recorded, which is what makes the supplier speed score meaningful rather than a feeling."
-//             />
-//           </Reveal>
-
-//           <Reveal delay={120}>
-//             <ol className="mt-16 grid gap-8 md:grid-cols-4">
-//               {deliveryStages.map((stage, i) => (
-//                 <li key={stage.name} className="relative">
-//                   {/* connector */}
-//                   {i < deliveryStages.length - 1 && (
-//                     <span
-//                       aria-hidden="true"
-//                       className="absolute top-3.5 left-8 hidden h-px w-[calc(100%-1rem)] bg-gradient-to-r from-gold to-maroon/15 md:block"
-//                     />
-//                   )}
-//                   <div className="flex items-center gap-3">
-//                     <span className="grid size-7 shrink-0 place-items-center rounded-full bg-gold font-mono text-xs font-bold text-maroon">
-//                       {i + 1}
-//                     </span>
-//                     <h3 className="text-base font-bold text-maroon">
-//                       {stage.name}
-//                     </h3>
-//                   </div>
-//                   <p className="mt-3 pl-10 text-sm/6 text-ink/70 md:pl-0">
-//                     {stage.body}
-//                   </p>
-//                 </li>
-//               ))}
-//             </ol>
-//           </Reveal>
-//         </div>
-//       </section>
-
-//       {/* Forecasting */}
-//       <section className="bg-ink">
-//         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-//           <Reveal>
-//             <SectionHeading
-//               tone="light"
-//               eyebrow="The forecasting model"
-//               title="It learns your shop, not an average one"
-//               intro="Two shops on the same street sell differently. The model is trained on your own sales and inventory records, so its suggestions match what actually moves off your shelves."
-//             />
-//           </Reveal>
-
-//           <div className="mt-14 grid gap-8 md:grid-cols-3">
-//             {[
-//               {
-//                 head: "What goes in",
-//                 body: "Sales per item over time, current and past stock levels, delivery lead times from each supplier, and the calendar of local seasons.",
-//               },
-//               {
-//                 head: "What comes out",
-//                 body: "For each item: expected demand for the coming weeks, a suggested order quantity, and the date the order needs to be placed to land in time.",
-//               },
-//               {
-//                 head: "How it improves",
-//                 body: "Every sale and every delivery is another data point. Predictions get sharper over the first few months and keep adjusting as your shop changes.",
-//               },
-//             ].map((block, i) => (
-//               <Reveal key={block.head} delay={i * 90}>
-//                 <div className="h-full rounded-xl border border-paper/12 bg-paper/[0.04] p-7">
-//                   <Eyebrow tone="light">{block.head}</Eyebrow>
-//                   <p className="mt-4 text-base/7 text-paper/70">{block.body}</p>
-//                 </div>
-//               </Reveal>
-//             ))}
-//           </div>
-
-//           <Reveal delay={200}>
-//             <div className="mt-20">
-//               <Eyebrow tone="light">Seasonal warnings</Eyebrow>
-//               <div className="mt-8">
-//                 <SeasonTimeline tone="light" />
-//               </div>
-//             </div>
-//           </Reveal>
-//         </div>
-//       </section>
-
-//       {/* Roadmap */}
-//       <section id="roadmap" className="scroll-mt-24 bg-paper">
-//         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-//           <Reveal>
-//             <SectionHeading
-//               eyebrow="Roadmap"
-//               title="What's decided, and what isn't"
-//               intro="We'd rather say what we're still weighing than promise it and quietly drop it."
-//             />
-//           </Reveal>
-
-//           <div className="mt-12 grid gap-6 md:grid-cols-2">
-//             <Reveal>
-//               <div className="h-full rounded-xl border-l-4 border-leaf bg-white p-7 shadow-sm">
-//                 <Eyebrow className="!text-leaf">Being built</Eyebrow>
-//                 <ul className="mt-4 space-y-3 text-base/7 text-ink/75">
-//                   <li>Stock, supplier, delivery and report modules</li>
-//                   <li>Low-stock alerts with WhatsApp and email restocking</li>
-//                   <li>Seasonal dashboard with two-to-three month lead time</li>
-//                   <li>Demand forecasting from your own records</li>
-//                 </ul>
-//               </div>
-//             </Reveal>
-
-//             <Reveal delay={100}>
-//               <div className="h-full rounded-xl border-l-4 border-amber bg-white p-7 shadow-sm">
-//                 <Eyebrow>Under consideration</Eyebrow>
-//                 <ul className="mt-4 space-y-3 text-base/7 text-ink/75">
-//                   <li>
-//                     Live GPS tracking of delivery vehicles on a map — useful,
-//                     but it only works if suppliers are willing to share
-//                     location, so we haven&apos;t committed to it yet.
-//                   </li>
-//                 </ul>
-//                 <p className="mt-5 font-mono text-xs text-ink/45">
-//                   If this would decide it for your shop, tell us — it moves up
-//                   the list.
-//                 </p>
-//               </div>
-//             </Reveal>
-//           </div>
-//         </div>
-//       </section>
-
-//       <CtaBand />
-//     </>
-//   );
-// }
-
-
 import type { Metadata } from "next";
+import Image from "next/image";
+
 import CtaBand from "@/components/CtaBand";
 import SeasonTimeline from "@/components/SeasonTimeline";
 import { Reveal } from "@/components/Reveal";
-import { Eyebrow, SectionHeading, ShelfRail } from "@/components/ui";
+import { Counter, Spotlight } from "@/components/motion";
+import { Badge, ButtonLink, Card, Eyebrow, SectionHeading, ShelfRail } from "@/components/ui";
+
+import DeliveryTracker from "@/components/widgets/DeliveryTracker";
+import PosUpload from "@/components/widgets/PosUpload";
+import FestivalCountdown from "@/components/widgets/FestivalCountdown";
 
 export const metadata: Metadata = {
-
-  
   title: "How it works",
   description:
-    "From loading your stock list to a delivered carton: setup, low-stock alerts, supplier messaging, delivery stages and the forecasting model behind InventiX.",
+    "From loading your stock list to a delivered carton: setup, low-stock alerts, supplier messaging, the six delivery stages, and what the forecasting can and cannot do yet.",
 };
 
-/* These are a genuine sequence, so they're numbered. */
+/* A genuine sequence, so it is numbered. */
 const setup = [
   {
     step: "01",
@@ -255,65 +27,86 @@ const setup = [
   {
     step: "02",
     title: "Set a reorder point per item",
-    body: "The level at which you'd normally start worrying. InventiX suggests one once it has a few weeks of sales, and you can change it any time.",
+    body: "The level at which you would normally start worrying. InventiX suggests a starting point — about a quarter of what you hold — so nobody has to think hard about every item.",
   },
   {
     step: "03",
     title: "Add your suppliers",
-    body: "Name, WhatsApp number or email, and what they supply. Scores start building from the first delivery.",
+    body: "Name, WhatsApp number or email, and what they sell. Their score starts building from the first completed delivery.",
   },
   {
     step: "04",
     title: "Sell as usual",
-    body: "Record sales at the counter or import them at the end of the day. Everything after this happens on its own.",
+    body: "Record sales at the counter, or export the day's file from your till and upload it. Everything after this happens on its own.",
   },
 ];
 
-const deliveryStages = [
+const loop = [
   {
-    name: "Processing",
-    body: "The supplier has the order and is putting it together.",
+    head: "Watch",
+    body: "Every item is measured against its own reorder point, not a level shared across the shop.",
   },
   {
-    name: "Put to delivery",
-    body: "Packed and handed to whoever is carrying it.",
+    head: "Warn",
+    body: "Crossing that line raises a notification carrying days of cover, not just a unit count.",
   },
   {
-    name: "On the way",
-    body: "In transit to your shop, with the promised arrival date shown.",
+    head: "Order",
+    body: "The message is written for you, checked against what the supplier holds, and sent the way they actually reply.",
   },
   {
-    name: "Purchased",
-    body: "Received, counted and added to stock. Any shortfall is recorded against the supplier.",
+    head: "Track",
+    body: "Six stages, both sides, live. You confirm receipt, and the stock count goes up by itself.",
+  },
+  {
+    head: "Learn",
+    body: "Every completed order feeds the supplier's measured speed, and every uploaded sales file feeds what comes next.",
   },
 ];
 
 export default function HowItWorksPage() {
   return (
     <>
-      <section className="bg-ink">
-        <div className="mx-auto max-w-7xl px-6 pt-20 pb-24 lg:px-8">
-          <Reveal>
+      {/* Hero */}
+      <section className="relative isolate overflow-hidden bg-ink">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute -top-32 -left-32 size-[32rem] rounded-full bg-amber/10 blur-3xl" />
+        </div>
+        <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 pt-16 pb-24 lg:grid-cols-[1.05fr_1fr] lg:px-8 lg:pt-20">
+          <Reveal from="left">
             <SectionHeading
               tone="light"
               eyebrow="How it works"
               title="From an empty shelf to a delivered carton"
-              intro="Four steps to set up, and then the loop runs by itself: watch, warn, order, track, learn."
+              intro="Four steps to set up. After that the loop runs by itself: watch, warn, order, track, learn."
+            />
+          </Reveal>
+          <Reveal from="right" delay={120}>
+            <Image
+              src="/img/shop-front.svg"
+              alt="A neighbourhood grocery shop, its shelves stocked except for one row that has run empty."
+              width={640}
+              height={420}
+              unoptimized
+              className="w-full"
             />
           </Reveal>
         </div>
       </section>
 
       {/* Setup */}
-      <section className="bg-paper">
+      <section className="grain relative bg-paper">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
           <Reveal>
-            <Eyebrow>Getting started</Eyebrow>
+            <SectionHeading
+              eyebrow="Getting started"
+              title="One afternoon, and then it is running"
+            />
           </Reveal>
-          <div className="mt-10 grid gap-px overflow-hidden rounded-2xl bg-maroon/10 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {setup.map((item, i) => (
-              <Reveal key={item.step} delay={i * 80}>
-                <div className="h-full bg-white p-7">
+              <Reveal key={item.step} delay={i * 80} from="scale">
+                <Card className="h-full">
                   <span className="font-mono text-3xl font-bold text-gold">
                     {item.step}
                   </span>
@@ -321,135 +114,180 @@ export default function HowItWorksPage() {
                     {item.title}
                   </h3>
                   <p className="mt-3 text-sm/6 text-ink/70">{item.body}</p>
-                </div>
+                </Card>
               </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Delivery stages */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-          <ShelfRail className="mb-14" />
-          <Reveal>
-            <SectionHeading
-              eyebrow="Delivery tracking"
-              title="Four stages, and each one is a timestamp"
-              intro="A delivery either moved or it didn't. Every stage change is recorded, which is what makes the supplier speed score meaningful rather than a feeling."
-            />
-          </Reveal>
-
-          <ol className="mt-20 grid gap-y-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-y-0">
-            {deliveryStages.map((stage, i) => {
-              const isLast = i === deliveryStages.length - 1;
-              return (
-                <li key={stage.name}>
-                  <Reveal delay={i * 140}>
-                    <div className="flex flex-col items-center text-center">
-                      {/* node row with connecting line */}
-                      <div className="flex w-full items-center">
-                        <span
-                          aria-hidden="true"
-                          className={`hidden h-0.5 flex-1 lg:block ${
-                            i === 0
-                              ? "bg-transparent"
-                              : "bg-gradient-to-r from-maroon/15 to-gold"
-                          }`}
-                        />
-                        <span
-                          className={`relative z-10 grid size-11 shrink-0 place-items-center rounded-full font-mono text-sm font-bold shadow-[0_2px_8px_rgba(0,0,0,0.12)] ${
-                            isLast ? "bg-leaf text-white" : "bg-gold text-maroon"
-                          }`}
-                        >
-                          {isLast ? (
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              className="size-4"
-                              aria-hidden="true"
-                            >
-                              <path
-                                d="M5 13l4 4L19 7"
-                                stroke="currentColor"
-                                strokeWidth={2.5}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          ) : (
-                            i + 1
-                          )}
-                          {isLast && (
-                            <span className="absolute -right-0.5 -top-0.5 flex size-3">
-                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-leaf/60" />
-                              <span className="relative inline-flex size-3 rounded-full bg-leaf ring-2 ring-white" />
-                            </span>
-                          )}
-                        </span>
-                        <span
-                          aria-hidden="true"
-                          className={`hidden h-0.5 flex-1 lg:block ${
-                            isLast
-                              ? "bg-transparent"
-                              : "bg-gradient-to-r from-gold to-maroon/15"
-                          }`}
-                        />
-                      </div>
-
-                      <h3 className="mt-4 text-base font-bold text-maroon">
-                        {stage.name}
-                      </h3>
-                      <p className="mt-2 max-w-[16rem] text-sm/6 text-ink/70">
-                        {stage.body}
-                      </p>
-                    </div>
-                  </Reveal>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-      </section>
-
-      {/* Forecasting */}
+      {/* The loop */}
       <section className="bg-ink">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
           <Reveal>
             <SectionHeading
               tone="light"
-              eyebrow="The forecasting model"
-              title="It learns your shop, not an average one"
-              intro="Two shops on the same street sell differently. The model is trained on your own sales and inventory records, so its suggestions match what actually moves off your shelves."
+              eyebrow="The loop"
+              title="Five things, going round"
+              intro="None of these need you to remember anything. That is the whole point of them."
             />
           </Reveal>
 
-          <div className="mt-14 grid gap-8 md:grid-cols-3">
-            {[
-              {
-                head: "What goes in",
-                body: "Sales per item over time, current and past stock levels, delivery lead times from each supplier, and the calendar of local seasons.",
-              },
-              {
-                head: "What comes out",
-                body: "For each item: expected demand for the coming weeks, a suggested order quantity, and the date the order needs to be placed to land in time.",
-              },
-              {
-                head: "How it improves",
-                body: "Every sale and every delivery is another data point. Predictions get sharper over the first few months and keep adjusting as your shop changes.",
-              },
-            ].map((block, i) => (
-              <Reveal key={block.head} delay={i * 90}>
-                <div className="h-full rounded-xl border border-paper/12 bg-paper/[0.04] p-7">
-                  <Eyebrow tone="light">{block.head}</Eyebrow>
-                  <p className="mt-4 text-base/7 text-paper/70">{block.body}</p>
-                </div>
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {loop.map((item, i) => (
+              <Reveal key={item.head} delay={i * 80}>
+                <Spotlight className="hairline-light h-full rounded-lg bg-paper/[0.04] p-6">
+                  <span className="font-mono text-[0.62rem] tracking-[0.2em] text-gold uppercase">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-3 text-base font-bold text-paper">
+                    {item.head}
+                  </h3>
+                  <p className="mt-2.5 text-sm/6 text-paper/65">{item.body}</p>
+                </Spotlight>
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Your till */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+          <div className="grid items-center gap-14 lg:grid-cols-2">
+            <Reveal from="left">
+              <div>
+                <SectionHeading
+                  eyebrow="Keeping the count honest"
+                  title="Your till already knows what you sold"
+                  intro="Export the day's or week's sales as CSV or Excel and upload it. InventiX finds the columns itself, and reduces your stock by what left the shop."
+                />
+                <p className="mt-6 text-base/7 text-ink/70">
+                  It reads an exported file rather than talking to a till
+                  directly, and that is a deliberate choice — it is what lets it
+                  work with any POS in the country instead of the three we could
+                  get an integration with.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-2">
+                  <Badge tone="good">any till that exports a file</Badge>
+                  <Badge tone="warn">same file can&apos;t apply twice</Badge>
+                </div>
+              </div>
+            </Reveal>
+            <Reveal from="right" delay={120}>
+              <PosUpload />
+            </Reveal>
+          </div>
+
+          <Reveal delay={180}>
+            <Image
+              src="/img/pos-upload.svg"
+              alt="A till receipt exported as a file, its rows matched one by one to the product catalogue."
+              width={520}
+              height={340}
+              unoptimized
+              className="mt-16 w-full max-w-lg"
+            />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Delivery */}
+      <section className="grain relative bg-paper">
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+          <ShelfRail className="mb-14" />
+          <Reveal>
+            <SectionHeading
+              eyebrow="Delivery tracking"
+              title="Six stages, and each one is a timestamp"
+              intro="A delivery either moved or it did not. Every stage change is recorded, which is what makes the supplier speed score a measurement rather than a feeling."
+            />
+          </Reveal>
+
+          <Reveal delay={120} from="scale">
+            <div className="mt-12">
+              <DeliveryTracker tone="dark" />
+            </div>
+          </Reveal>
+
+          <Reveal delay={180}>
+            <div className="mt-12 grid items-center gap-10 lg:grid-cols-[1fr_1fr]">
+              <Image
+                src="/img/delivery.svg"
+                alt="A delivery lorry on a marked route between the supplier and the shop."
+                width={560}
+                height={320}
+                unoptimized
+                className="w-full max-w-lg"
+              />
+              <p className="text-base/7 text-ink/70">
+                The supplier moves the order through the first five stages. The
+                sixth is yours alone, because confirming receipt is the moment
+                your stock count goes up — and a supplier saying
+                &ldquo;delivered&rdquo; is a claim, while you confirming it is a
+                fact.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Forecasting — honest about what exists today */}
+      <section className="bg-ink">
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+          <div className="grid items-start gap-14 lg:grid-cols-[1.05fr_1fr]">
+            <Reveal from="left">
+              <div>
+                <SectionHeading
+                  tone="light"
+                  eyebrow="Seasons and forecasting"
+                  title="What it does today, and what it does not yet"
+                  intro="Two shops on the same street sell differently, so a model trained on an average shop is worth very little. Ours will be trained on yours — which means it needs your history before it says anything."
+                />
+
+                <dl className="mt-10 space-y-6">
+                  <div className="hairline-light rounded-lg p-5">
+                    <dt className="flex items-center gap-2">
+                      <span className="size-1.5 rounded-full bg-leaf" />
+                      <span className="font-mono text-[0.66rem] tracking-[0.18em] text-leaf uppercase">
+                        Working today
+                      </span>
+                    </dt>
+                    <dd className="mt-3 text-base/7 text-paper/70">
+                      The festival calendar, with an order-by date roughly{" "}
+                      <Counter to={11} className="font-mono text-gold" /> weeks
+                      ahead of each peak, the categories that usually lift, and
+                      a suggested quantity you can order straight from.
+                    </dd>
+                  </div>
+                  <div className="hairline-light rounded-lg p-5">
+                    <dt className="flex items-center gap-2">
+                      <span className="size-1.5 rounded-full bg-amber" />
+                      <span className="font-mono text-[0.66rem] tracking-[0.18em] text-amber uppercase">
+                        Coming next
+                      </span>
+                    </dt>
+                    <dd className="mt-3 text-base/7 text-paper/70">
+                      Demand predicted per item from your own uploads, so
+                      &ldquo;low stock&rdquo; becomes &ldquo;you will run out on
+                      Thursday&rdquo;. It needs several weeks of sales before it
+                      says anything at all — and it will say so, rather than
+                      inventing a number.
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </Reveal>
+
+            <Reveal from="right" delay={140}>
+              <Spotlight className="rounded-lg">
+                <FestivalCountdown tone="light" />
+              </Spotlight>
+            </Reveal>
+          </div>
 
           <Reveal delay={200}>
-            <div className="mt-20">
+            <div className="mt-16">
               <Eyebrow tone="light">Seasonal warnings</Eyebrow>
               <div className="mt-8">
                 <SeasonTimeline tone="light" />
@@ -460,37 +298,52 @@ export default function HowItWorksPage() {
       </section>
 
       {/* Roadmap */}
-      <section id="roadmap" className="scroll-mt-24 bg-paper">
+      <section id="roadmap" className="scroll-mt-24 bg-white">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
           <Reveal>
             <SectionHeading
               eyebrow="Roadmap"
               title="What's decided, and what isn't"
-              intro="We'd rather say what we're still weighing than promise it and quietly drop it."
+              intro="We would rather say what we are still weighing than promise it and quietly drop it."
             />
           </Reveal>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            <Reveal>
-              <div className="h-full rounded-xl border-l-4 border-leaf bg-white p-7 shadow-sm">
-                <Eyebrow className="!text-leaf">Being built</Eyebrow>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            <Reveal from="left">
+              <div className="h-full rounded-lg border-l-4 border-leaf bg-paper p-7">
+                <Eyebrow className="!text-leaf">Built and working</Eyebrow>
                 <ul className="mt-4 space-y-3 text-base/7 text-ink/75">
-                  <li>Stock, supplier, delivery and report modules</li>
+                  <li>Stock, suppliers, deliveries and reports</li>
                   <li>Low-stock alerts with WhatsApp and email restocking</li>
-                  <li>Seasonal dashboard with two-to-three month lead time</li>
-                  <li>Demand forecasting from your own records</li>
+                  <li>POS sales upload from any exported file</li>
+                  <li>Supplier ranking from completed orders</li>
+                  <li>Festival warnings with order-by dates</li>
                 </ul>
               </div>
             </Reveal>
 
-            <Reveal delay={100}>
-              <div className="h-full rounded-xl border-l-4 border-amber bg-white p-7 shadow-sm">
-                <Eyebrow>Under consideration</Eyebrow>
+            <Reveal delay={90}>
+              <div className="h-full rounded-lg border-l-4 border-amber bg-paper p-7">
+                <Eyebrow>Coming next</Eyebrow>
+                <ul className="mt-4 space-y-3 text-base/7 text-ink/75">
+                  <li>Demand forecasting from your own sales history</li>
+                  <li>Festival lift learned from your shop, not the average</li>
+                  <li>Reorder points suggested from real sales velocity</li>
+                  <li>Push notifications on the lock screen</li>
+                  <li>An installable Android app</li>
+                </ul>
+              </div>
+            </Reveal>
+
+            <Reveal from="right" delay={180}>
+              <div className="h-full rounded-lg border-l-4 border-maroon/30 bg-paper p-7">
+                <Eyebrow>Still being decided</Eyebrow>
                 <ul className="mt-4 space-y-3 text-base/7 text-ink/75">
                   <li>
-                    Live GPS tracking of delivery vehicles on a map — useful,
-                    but it only works if suppliers are willing to share
-                    location, so we haven&apos;t committed to it yet.
+                    Live GPS tracking of the delivery vehicle on a map. It only
+                    works if suppliers agree to share location, so we have not
+                    committed to it — the six stages work without anyone
+                    installing anything.
                   </li>
                 </ul>
                 <p className="mt-5 font-mono text-xs text-ink/45">
@@ -500,6 +353,14 @@ export default function HowItWorksPage() {
               </div>
             </Reveal>
           </div>
+
+          <Reveal delay={240}>
+            <div className="mt-10">
+              <ButtonLink href="/features" variant="outline" arrow>
+                Every feature in detail
+              </ButtonLink>
+            </div>
+          </Reveal>
         </div>
       </section>
 

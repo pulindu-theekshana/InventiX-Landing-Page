@@ -1,152 +1,160 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+
 import CtaBand from "@/components/CtaBand";
 import { Reveal } from "@/components/Reveal";
-import { Eyebrow, SectionHeading, ShelfRail } from "@/components/ui";
+import { Spotlight } from "@/components/motion";
+import { Badge, Card, Eyebrow, SectionHeading, ShelfRail } from "@/components/ui";
+
+import SupplierScore from "@/components/widgets/SupplierScore";
+import DeliveryTracker from "@/components/widgets/DeliveryTracker";
 
 export const metadata: Metadata = {
   title: "Suppliers & delivery",
   description:
-    "How InventiX ranks suppliers on quality, quantity and delivery speed, how your ratings feed in, and how the four delivery stages are tracked.",
+    "How InventiX scores suppliers out of 100 on quality, delivery speed, quantity availability and price, and how the six delivery stages are tracked by both sides.",
 };
 
+/* The real weighting. Speed is measured from completed orders, never from
+   the lead time a supplier claims. */
 const criteria = [
   {
     name: "Quality",
-    weight: "What arrived",
-    body: "Damaged bags, short-dated stock, the wrong grade of rice. Log it once at receiving and it stays on the supplier's record.",
-  },
-  {
-    name: "Quantity",
-    weight: "How much of it",
-    body: "Ordered 200 kg, received 180. The gap between the order and the count is measured on every delivery, not remembered vaguely.",
+    weight: 40,
+    source: "Star ratings from shops after delivery",
+    body: "Damaged bags, short-dated stock, the wrong grade of rice. You rate it once at receiving and it stays on that supplier's record — the largest single part of their score, because it is the part you feel first.",
   },
   {
     name: "Delivery speed",
-    weight: "How long it took",
-    body: "Measured from the moment you place the order to the moment stock is counted in — using the timestamps from the four delivery stages.",
+    weight: 30,
+    source: "Measured from orders that actually completed",
+    body: "Not the lead time they claim. The clock runs from the moment you place the order to the moment you confirm receipt, using the timestamps from the six stages. A supplier cannot improve this by promising harder.",
   },
-];
-
-const scorecard = [
-  { name: "Ranjith Stores", quality: 94, quantity: 97, speed: 86, stars: 4.6 },
-  { name: "Sampath Traders", quality: 81, quantity: 74, speed: 79, stars: 4.1 },
   {
-    name: "New Lanka Agencies",
-    quality: 62,
-    quantity: 58,
-    speed: 41,
-    stars: 3.2,
+    name: "Quantity availability",
+    weight: 20,
+    source: "Whether they could fill what you asked for",
+    body: "Ordered 200 kg, they hold 180. The gap between what you needed and what they could supply is measured on every order, rather than remembered vaguely.",
+  },
+  {
+    name: "Price",
+    weight: 10,
+    source: "Against other suppliers of the same product",
+    body: "The smallest weight on purpose. The cheapest supplier who arrives late with damaged stock is not the best supplier, and a score that says otherwise would be useless to you.",
   },
 ];
 
-function Bar({ value }: { value: number }) {
-  const tone =
-    value >= 80 ? "bg-leaf" : value >= 60 ? "bg-amber" : "bg-[#B02A0E]";
-  return (
-    <div className="flex items-center gap-2">
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-maroon/10">
-        <div
-          className={`h-full rounded-full ${tone}`}
-          style={{ width: `${value}%` }}
-        />
-      </div>
-      <span className="w-7 shrink-0 text-right font-mono text-[0.68rem] text-ink/55">
-        {value}
-      </span>
-    </div>
-  );
-}
+const fairness = [
+  {
+    head: "Two opinions are not evidence",
+    body: "With only one or two ratings, a supplier's average is pulled back towards neutral. One five-star review should not put somebody at the top of your list.",
+  },
+  {
+    head: "New suppliers are labelled, not buried",
+    body: "Under three completed orders they show as new, with a provisional score. A newcomer who might be excellent stays visible instead of sinking out of sight.",
+  },
+  {
+    head: "Nobody who fails is hidden",
+    body: "A supplier who cannot fill your quantity is marked as such and still shown, so you can see why they placed lower rather than wondering where they went.",
+  },
+];
 
 export default function SuppliersPage() {
   return (
     <>
-      <section className="bg-ink">
-        <div className="mx-auto max-w-7xl px-6 pt-20 pb-24 lg:px-8">
-          <Reveal>
+      {/* Hero */}
+      <section className="relative isolate overflow-hidden bg-ink">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute -top-40 -right-32 size-[34rem] rounded-full bg-maroon-400/25 blur-3xl" />
+        </div>
+        <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 pt-16 pb-24 lg:grid-cols-[1.05fr_1fr] lg:px-8 lg:pt-20">
+          <Reveal from="left">
             <SectionHeading
               tone="light"
               eyebrow="Suppliers & delivery"
               title="Loyalty is good. Records are better."
-              intro="Most shop owners already know who lets them down. InventiX just makes it something you can show — and act on the same day."
+              intro="Most shop owners already know who lets them down. InventiX makes it something you can show — and act on the same day, without losing the history of the supplier you are leaving."
             />
+          </Reveal>
+          <Reveal from="right" delay={120}>
+            <Spotlight className="rounded-lg lg:ml-6">
+              <SupplierScore tone="light" />
+            </Spotlight>
           </Reveal>
         </div>
       </section>
 
-      {/* Criteria */}
-      <section className="bg-paper">
+      {/* The four parts of the score */}
+      <section className="grain relative bg-paper">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
           <Reveal>
             <SectionHeading
               eyebrow="Ranking"
-              title="Three things, measured at receiving"
-              intro="Nothing subjective, nothing collected from anywhere but your own deliveries."
+              title="A score out of 100, and you can see every part of it"
+              intro="Four measurements, weighted. Nothing subjective beyond your own star rating, and nothing collected from anywhere but your own orders."
             />
           </Reveal>
 
-          <div className="mt-14 grid gap-8 md:grid-cols-3">
+          <div className="mt-14 grid gap-5 md:grid-cols-2">
             {criteria.map((c, i) => (
-              <Reveal key={c.name} delay={i * 90}>
-                <div className="h-full rounded-xl border border-maroon/12 bg-white p-7 transition duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-lg hover:shadow-maroon/5">
-                  <Eyebrow>{c.weight}</Eyebrow>
-                  <h3 className="mt-3 text-xl font-bold text-maroon">
-                    {c.name}
-                  </h3>
+              <Reveal key={c.name} delay={i * 80} from={i % 2 ? "right" : "left"}>
+                <Card className="h-full">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <h3 className="text-xl font-bold text-maroon">{c.name}</h3>
+                    <span className="tracking-display shrink-0 text-2xl font-bold text-gold">
+                      {c.weight}
+                      <span className="text-sm text-ink/40">/100</span>
+                    </span>
+                  </div>
+
+                  {/* the weight, drawn to scale */}
+                  <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-maroon/10">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-amber to-gold"
+                      style={{ width: `${c.weight}%` }}
+                    />
+                  </div>
+
+                  <p className="mt-3 font-mono text-[0.66rem] text-ink/50">
+                    {c.source}
+                  </p>
                   <p className="mt-4 text-base/7 text-ink/70">{c.body}</p>
-                </div>
+                </Card>
               </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Scorecard */}
+      {/* Fairness */}
       <section className="bg-white">
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
           <ShelfRail className="mb-14" />
           <Reveal>
             <SectionHeading
-              eyebrow="The list, for one item"
-              title="Rice, ranked"
-              intro="Open any product and the suppliers who carry it are already sorted. The one at the top is the one your own deliveries say is best."
+              eyebrow="Keeping it fair"
+              title="A ranking that can be gamed is worth nothing"
+              intro="Three rules stop the score from rewarding the wrong things."
             />
           </Reveal>
 
-          <Reveal delay={120}>
-            <div className="mt-12 overflow-hidden rounded-2xl border border-maroon/12">
-              <div className="hidden grid-cols-[1.4fr_1fr_1fr_1fr_auto] gap-6 bg-paper px-6 py-3 font-mono text-[0.68rem] tracking-[0.16em] text-ink/50 uppercase md:grid">
-                <span>Supplier</span>
-                <span>Quality</span>
-                <span>Quantity</span>
-                <span>Speed</span>
-                <span>Rating</span>
-              </div>
-              <div className="divide-y divide-maroon/10">
-                {scorecard.map((s) => (
-                  <div
-                    key={s.name}
-                    className="grid gap-4 px-6 py-5 transition-colors hover:bg-paper md:grid-cols-[1.4fr_1fr_1fr_1fr_auto] md:items-center md:gap-6"
-                  >
-                    <p className="text-sm font-semibold text-maroon">
-                      {s.name}
-                    </p>
-                    <Bar value={s.quality} />
-                    <Bar value={s.quantity} />
-                    <Bar value={s.speed} />
-                    <p className="font-mono text-sm text-amber">{s.stars} ★</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {fairness.map((f, i) => (
+              <Reveal key={f.head} delay={i * 90} from="scale">
+                <div className="h-full border-t-2 border-gold pt-5">
+                  <h3 className="text-lg font-bold text-maroon">{f.head}</h3>
+                  <p className="mt-3 text-base/7 text-ink/70">{f.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
 
-          <Reveal delay={180}>
-            <p className="mt-6 max-w-2xl text-sm/6 text-ink/60">
+          <Reveal delay={200}>
+            <p className="mt-14 max-w-2xl text-sm/6 text-ink/60">
               Your star rating sits alongside the measured scores rather than
               replacing them — a supplier can be slow and still be the one you
-              trust with fragile stock. Switching to another supplier for an
-              item takes one change and doesn&apos;t lose the history of the old
-              one.
+              trust with fragile stock. Switching supplier for an item takes one
+              change, and the history of the old one stays intact.
             </p>
           </Reveal>
         </div>
@@ -160,39 +168,58 @@ export default function SuppliersPage() {
               tone="light"
               eyebrow="Delivery"
               title="Where the order actually is"
-              intro="Each stage is a timestamp, and those timestamps are what the speed score is built from."
+              intro="Six stages, visible to both sides, changing live without a refresh. Each one is a timestamp, and those timestamps are what the speed score is built from."
             />
           </Reveal>
 
-          <div className="mt-14 grid gap-px overflow-hidden rounded-2xl bg-paper/12 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              ["Processing", "Order received, being assembled"],
-              ["Put to delivery", "Packed and handed over"],
-              ["On the way", "In transit, arrival date shown"],
-              ["Purchased", "Counted in, shortfalls recorded"],
-            ].map(([name, body], i) => (
-              <Reveal key={name} delay={i * 80}>
-                <div className="h-full bg-ink p-7">
-                  <span className="font-mono text-sm text-gold">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="mt-3 text-base font-bold text-paper">
-                    {name}
-                  </h3>
-                  <p className="mt-2 text-sm/6 text-paper/60">{body}</p>
+          <Reveal delay={120} from="scale">
+            <div className="mt-12">
+              <DeliveryTracker tone="light" />
+            </div>
+          </Reveal>
+
+          <div className="mt-14 grid items-center gap-12 lg:grid-cols-[1fr_1fr]">
+            <Reveal from="left" delay={160}>
+              <div className="hairline-light overflow-hidden rounded-lg">
+                <Image
+                  src="/img/photo/delivery.jpg"
+                  alt="Two workers loading cartons into the back of a delivery lorry at a loading bay."
+                  width={1024}
+                  height={765}
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </Reveal>
+
+            <Reveal from="right" delay={200}>
+              <div>
+                <h3 className="text-xl font-bold text-paper">
+                  The last stage is yours alone
+                </h3>
+                <p className="mt-4 text-base/7 text-paper/70">
+                  The supplier moves an order through the first five stages.
+                  Only you can mark it purchased, because that is the moment
+                  your stock count goes up. A supplier saying
+                  &ldquo;delivered&rdquo; is a claim; you confirming it is a
+                  fact, and a stock count built on claims is not worth keeping.
+                </p>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <Badge tone="good">stage changes arrive live</Badge>
+                  <Badge tone="warn">a decline needs a reason</Badge>
                 </div>
-              </Reveal>
-            ))}
+              </div>
+            </Reveal>
           </div>
 
-          <Reveal delay={200}>
-            <div className="mt-10 rounded-xl border border-amber/30 bg-amber/[0.07] p-6">
+          <Reveal delay={240}>
+            <div className="mt-12 rounded-lg border border-amber/30 bg-amber/[0.07] p-6">
               <Eyebrow tone="light">Still being decided</Eyebrow>
               <p className="mt-3 max-w-3xl text-base/7 text-paper/70">
                 Live GPS tracking of the delivery vehicle on a map is something
-                we&apos;re considering. It depends on suppliers agreeing to
-                share location, so we&apos;re not promising it yet — the four
-                stages above work without anyone installing anything.
+                we are considering. It depends on suppliers agreeing to share
+                location, so we are not promising it yet — the six stages above
+                work without anyone installing anything.
               </p>
             </div>
           </Reveal>
