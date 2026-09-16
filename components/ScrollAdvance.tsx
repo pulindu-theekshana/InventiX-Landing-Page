@@ -38,7 +38,7 @@ const ARM_DELAY = 600; // ms at the bottom before intent starts counting
 const THRESHOLD = 620; // px of extra wheel needed to commit
 const DECAY_PER_MS = 1.6; // px of intent lost per ms while idle
 const COOLDOWN = 1100; // ms after a navigation
-const EXIT_MS = 620; // must match the scatter animation below
+const EXIT_MS = 380; // must match the exit animation below
 
 export default function ScrollAdvance() {
   const router = useRouter();
@@ -56,51 +56,33 @@ export default function ScrollAdvance() {
   const next = ORDER[ORDER.findIndex((p) => p.href === pathname) + 1];
 
   /* ---------------------------------------------------------------- */
-  /* The scatter: sections drift toward each other's slots, as though   */
-  /* the page were being reshuffled, then fall away.                    */
+  /* The exit: the page lifts and dissolves as one piece.               */
+  /*                                                                    */
+  /* An earlier version scattered the sections individually. It read as  */
+  /* mess rather than motion — too many things moving in too many        */
+  /* directions to follow. One object, one direction, one short move is  */
+  /* sharper and it gets out of the way faster.                          */
   /* ---------------------------------------------------------------- */
-  const scatterOut = useCallback(() => {
-    const sections = [
-      ...document.querySelectorAll<HTMLElement>("#main section"),
-    ].filter((s) => !s.parentElement?.closest("section"));
+  const liftOut = useCallback(() => {
+    const main = document.getElementById("main");
+    if (!main) return Promise.resolve();
 
-    if (!sections.length) return Promise.resolve();
-
-    const tops = sections.map((s) => s.offsetTop);
-
-    const animations = sections.map((el, i) => {
-      // where this block would sit if the page reordered itself
-      const swapWith = (i + 1) % sections.length;
-      const drift = (tops[swapWith] - tops[i]) * 0.14;
-      const side = i % 2 === 0 ? -1 : 1;
-
-      return el.animate(
-        [
-          { transform: "none", opacity: 1, filter: "blur(0px)" },
-          {
-            transform: `translate3d(${side * (18 + i * 6)}px, ${drift}px, 0) rotate(${side * (0.6 + i * 0.25)}deg) scale(0.975)`,
-            opacity: 0.85,
-            filter: "blur(0.5px)",
-            offset: 0.5,
-          },
-          {
-            transform: `translate3d(${side * (70 + i * 14)}px, 120px, 0) rotate(${side * (3 + i * 0.7)}deg) scale(0.9)`,
-            opacity: 0,
-            filter: "blur(3px)",
-          },
-        ],
+    const anim = main.animate(
+      [
+        { transform: "none", opacity: 1 },
         {
-          duration: EXIT_MS,
-          delay: i * 45,
-          easing: "cubic-bezier(0.7, 0, 0.84, 0)",
-          fill: "forwards",
+          transform: "translate3d(0, -26px, 0) scale(0.988)",
+          opacity: 0,
         },
-      );
-    });
-
-    return Promise.all(
-      animations.map((a) => a.finished.catch(() => undefined)),
+      ],
+      {
+        duration: EXIT_MS,
+        easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+        fill: "forwards",
+      },
     );
+
+    return anim.finished.catch(() => undefined);
   }, []);
 
   const go = useCallback(async () => {
@@ -117,12 +99,12 @@ export default function ScrollAdvance() {
       /* private mode — the plain fade is a fine fallback */
     }
 
-    await scatterOut();
+    await liftOut();
     router.push(next.href);
     window.setTimeout(() => {
       busy.current = false;
     }, COOLDOWN);
-  }, [next, router, scatterOut]);
+  }, [next, router, liftOut]);
 
   /* ---------------------------------------------------------------- */
 

@@ -123,9 +123,11 @@ export default function LowStockAlert() {
         </footer>
       </div>
 
-      {/* the alert itself */}
+      {/* The alert itself. It overlaps the top edge so it reads as having
+          just landed, but stays inside the card's width — spilling sideways
+          collides with whatever sits in the next column. */}
       {step >= 3 && (
-        <div className="animate-drop-in absolute -top-5 -right-3 w-[15rem] rounded-md border border-gold/30 bg-maroon p-3.5 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.7)] sm:-right-7">
+        <div className="animate-drop-in absolute -top-5 right-3 w-[15rem] rounded-md border border-gold/30 bg-maroon p-3.5 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.7)] sm:right-4">
           <div className="flex items-start gap-3">
             <span className="animate-pulse-ring mt-1 size-2 shrink-0 rounded-full bg-gold" />
             <div className="min-w-0">
