@@ -104,19 +104,24 @@ export default function DeliveryTracker({
             const current = i === reached - 1;
             return (
               <li key={stage.id} className="flex flex-col items-start">
+                {/* The stage the order is sitting at right now gets the green
+                    treatment and a live ping, so the eye lands on "where is
+                    it" before it reads any of the labels. */}
                 <span
                   className={`relative flex size-4 items-center justify-center rounded-full transition-colors duration-300 ${
-                    done
-                      ? "bg-gold"
-                      : light
-                        ? "bg-ink-800 ring-1 ring-paper/20"
-                        : "bg-paper ring-1 ring-maroon/20"
-                  } ${current ? "animate-pulse-ring" : ""}`}
+                    current
+                      ? "bg-leaf"
+                      : done
+                        ? "bg-gold"
+                        : light
+                          ? "bg-ink-800 ring-1 ring-paper/20"
+                          : "bg-paper ring-1 ring-maroon/20"
+                  }`}
                 >
                   {done && (
                     <svg
                       viewBox="0 0 12 12"
-                      className="size-2.5 text-maroon"
+                      className={`size-2.5 ${current ? "text-paper" : "text-maroon"}`}
                       aria-hidden="true"
                     >
                       <path
@@ -128,6 +133,12 @@ export default function DeliveryTracker({
                         strokeLinejoin="round"
                       />
                     </svg>
+                  )}
+                  {current && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute inline-flex size-full animate-ping rounded-full bg-leaf/60"
+                    />
                   )}
                 </span>
                 <span
